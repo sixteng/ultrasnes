@@ -18,3 +18,12 @@
 ## References
 
 * https://github.com/PeterLemon/SNES/
+
+
+## Build
+
+https://scons.org/
+
+sudo apt get install scons
+
+scons
