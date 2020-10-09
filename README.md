@@ -12,6 +12,9 @@
 * https://undisbeliever.net/snesdev/65816-opcodes.html Details about all the Instructions of the CPU
 * http://www.obelisk.me.uk/6502/reference.html
 
+### Registers
+* [cheat sheet](https://undisbeliever.net/snesdev/registers/cheatsheet.html)
+
 ## References
 
-* https://github.com/PeterLemon/SNES/ 
+* https://github.com/PeterLemon/SNES/
