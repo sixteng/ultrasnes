@@ -9,7 +9,8 @@
 
 ### Instructions
 
-https://undisbeliever.net/snesdev/65816-opcodes.html Details about all the Instructions of the CPU
+* https://undisbeliever.net/snesdev/65816-opcodes.html Details about all the Instructions of the CPU
+* http://www.obelisk.me.uk/6502/reference.html
 
 ## References
 
