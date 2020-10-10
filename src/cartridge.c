@@ -16,7 +16,7 @@ size_t cartridge_smc_header_size(size_t size) {
     return size % 1024;
 }
 
-size_t get_cartridge_header_offset(uint8_t * data) {
+size_t cartridge_get_header_offset(uint8_t * data) {
     // We will test for clear and good ASCII title at different locations
     // TODO: Make a better check
 
@@ -34,7 +34,15 @@ size_t get_cartridge_header_offset(uint8_t * data) {
     return 0x7FC0;
 }
 
-cartridge * load_cartridge(char * filename) {
+cartridge_bank * cartridge_get_bank(cartridge * cart, uint8_t bank) {
+    return (cartridge_bank*) cart->rom + (0xffff * bank);
+}
+
+cartridge_bank * cartridge_get_current_bank(cartridge * cart) {
+    return cartridge_get_bank(cart, cart->bank_index);
+}
+
+cartridge * cartridge_load(char * filename) {
     // Open file
     FILE *fp;
     fp = fopen(filename, "r");
@@ -60,18 +68,23 @@ cartridge * load_cartridge(char * filename) {
     // Create a new cartridge
     cartridge * c = malloc(sizeof(cartridge));
 
+    c->raw = cartridgebuffer;
+    c->size = read_size;
+    
+
     // Check for cartridge header and ignore it
     cartridgebuffer = cartridgebuffer + cartridge_smc_header_size(read_size);
 
+    // Meta data
+    c->header_offset = cartridge_get_header_offset(cartridgebuffer);
+
     // Mapp data to cartridge
-    c->banks = (cartridge_bank*) cartridgebuffer;
-    c->header = (cartridge_header*) (cartridgebuffer + get_cartridge_header_offset(cartridgebuffer));
+    c->rom = cartridgebuffer;
+    c->header = (cartridge_header*) (cartridgebuffer + c->header_offset);
 
     return c;
 }
 
-void unload_cartridge(cartridge * cart) {
-    // TODO: Free memory
-    
-    // free(cart->banks);
+void cartridge_unload(cartridge * cart) {
+    free(cart->raw);
 }

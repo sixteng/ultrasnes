@@ -51,9 +51,22 @@ typedef struct {
 } cartridge_bank;
 
 typedef struct {
+    // Raw cartridge data
+    uint8_t * raw;
+    size_t size;
+
+    // Meta info
+    size_t header_offset;
+
+    // Mapped
     cartridge_header *header; // First bank contains the header
-    cartridge_bank *banks; // The banks of the cartridge
+    uint8_t * rom; // The banks of the cartridge
+    
+    // Settings
+    uint8_t bank_index;
 } cartridge;
 
-cartridge * load_cartridge(char * filename);
-void unload_cartridge(cartridge *);
+cartridge_bank * cartridge_get_current_bank(cartridge * cart);
+cartridge_bank * cartridge_get_bank(cartridge * cart, uint8_t bank);
+cartridge * cartridge_load(char * filename);
+void cartridge_unload(cartridge * cart);

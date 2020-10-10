@@ -2,7 +2,7 @@
 #include "cartridge.h"
 
 int main() {
-    cartridge * cart = load_cartridge("roms/Super Mario Kart.smc");
+    cartridge * cart = cartridge_load("roms/Ultima VII - The Black Gate.smc");
 
     if (cart == NULL) {
         printf("File missing\n");
@@ -12,7 +12,7 @@ int main() {
     printf("%.21s\n", cart->header->title);
     printf("%i\n", cart->header->make.mode);
 
-    unload_cartridge(cart);
+    cartridge_unload(cart);
 
     return 0;
 }
