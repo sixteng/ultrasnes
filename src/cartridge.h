@@ -15,23 +15,45 @@ typedef struct {
 
 // TODO: Handle different cartridge types, dynamic allication or structs ?
 
+/* Mappings
+    LoROM - 0x00007FC0 - Final Fantasy 2
+    HiROM - 0x0000FFC0 - Super Mario Cart / Final Fantasy 3
+    SA-1 ROM - 0x00007FC0 - Super Mario RPG
+    LoROM + FastROM - 0x000081C0 - Ultima VII
+    HiROM + FastROM - ??????
+    ExLoROM - 0x00007FC0 - Super Mario RPG
+    ExHiROM - ????? - Tales of Phantasia
+
+*/
+
+typedef enum {
+    LOROM = 0,
+    HIROM = 0xFFC0,
+} cartridge_type;
+
 typedef struct {
-    uint8_t data[0xffff + 0x200 - 0x3f];
+    uint8_t unused:3;
+    uint8_t speed:1;
+    uint8_t mode: 4;
+} cartridge_makeup;
+
+typedef struct {
     char title[21];
-    uint8_t make;
+    cartridge_makeup make;
     uint8_t type;
     uint8_t rom_size;
     uint8_t ram_size;
     uint8_t rest[4];
-} header;
+} cartridge_header;
 
 typedef struct {
-    uint8_t data[0xffff + 0x200]; // 64kb of data
-} bank;
+    uint8_t data[0xffff]; // 64kb of data
+} cartridge_bank;
 
 typedef struct {
-    header *header; // First bank contains the header
-    bank *banks; // The banks of the cartridge
+    cartridge_header *header; // First bank contains the header
+    cartridge_bank *banks; // The banks of the cartridge
 } cartridge;
 
 cartridge * load_cartridge(char * filename);
+void unload_cartridge(cartridge *);
